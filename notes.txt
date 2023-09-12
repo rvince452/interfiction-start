@@ -1,0 +1,34 @@
+--To run, from WEB folder
+flask --app flaskr run --debug
+
+--To init db, from WEB folder:
+flask --app flaskr init-db
+
+http://127.0.0.1:5000/hello
+
+user=test
+pass=rose1S
+
+https://aws.amazon.com/tutorials/serve-a-flask-app/
+
+---Docker 
+docker build -t flasktest .
+
+docker run -p 5000:5000 flasktest
+
+-docker command to use, use 0.0.0.0!
+python -m flask run --host=0.0.0.0
+
+--test in docker 
+http://localhost:5000/
+
+--deploy to lightsail
+
+-get docker image
+docker images
+-push to aws
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label webnew --image 088674434418
+-deploy in aws by selecting the image and expose the correct port (5000)
+-test in aws
+https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+
