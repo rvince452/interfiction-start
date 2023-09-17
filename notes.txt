@@ -1,34 +1,39 @@
---To run, from WEB folder
-flask --app flaskr run --debug
+To install Waitress
+pip install waitress
 
---To init db, from WEB folder:
-flask --app flaskr init-db
+To run on Windows:
+    From WEB folder:
+        flask --app app run
+        flask --app app run --host=0.0.0.0
+        flask --app app run --debug --host=0.0.0.0
 
-http://127.0.0.1:5000/hello
+To run on Waitress:
+waitress-serve --host 127.0.0.1 --port 5000 app:app
+waitress-serve --host 0.0.0.0 --port 5000 app:app
 
-user=test
-pass=rose1S
+To test:
+http://127.0.0.1:5000/
 
-https://aws.amazon.com/tutorials/serve-a-flask-app/
+Prepare for Docket
+Update requirements.txt
+pipenv requirements > requirements.txt
 
 ---Docker 
-docker build -t flasktest .
+docker build -t flask1 .
 
-docker run -p 5000:5000 flasktest
-
--docker command to use, use 0.0.0.0!
-python -m flask run --host=0.0.0.0
-
---test in docker 
-http://localhost:5000/
-
---deploy to lightsail
+docker run -p 5000:5000 flask1
 
 -get docker image
 docker images
 -push to aws
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label webnew --image 088674434418
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label webf1 --image 4298f231e492
 -deploy in aws by selecting the image and expose the correct port (5000)
 -test in aws
 https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+
+
+
+
+
+
 
