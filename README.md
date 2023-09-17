@@ -1,3 +1,17 @@
+# simple-webapp-1
+Basic flask application. Run and deploy to AWS
+
+Notes:
+1. Just one application: simple hello UI
+1. App resides in web folder
+1. Install Waitress as the web server
+1. Can test from windows with waitress or flask
+1. Use pipenv to manage package dependencies and to create a requirements.txt file
+1. Can build/run/test in Docker. Run docker commands from Web folder
+1. Use lightsailctrl to push the docker image to your lightsail
+1. Test in lightsail.
+
+
 # interfiction-start
 This is the start of my ***Interfiction*** project. The general purpose is to implement an interactive fiction website.
 

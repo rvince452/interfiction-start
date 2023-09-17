@@ -1,0 +1,39 @@
+To install Waitress
+pip install waitress
+
+To run on Windows:
+    From WEB folder:
+        flask --app app run
+        flask --app app run --host=0.0.0.0
+        flask --app app run --debug --host=0.0.0.0
+
+To run on Waitress:
+waitress-serve --host 127.0.0.1 --port 5000 app:app
+waitress-serve --host 0.0.0.0 --port 5000 app:app
+
+To test:
+http://127.0.0.1:5000/
+
+Prepare for Docket
+Update requirements.txt
+pipenv requirements > requirements.txt
+
+---Docker 
+docker build -t flask1 .
+
+docker run -p 5000:5000 flask1
+
+-get docker image
+docker images
+-push to aws
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label webf1 --image 4298f231e492
+-deploy in aws by selecting the image and expose the correct port (5000)
+-test in aws
+https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+
+
+
+
+
+
+
