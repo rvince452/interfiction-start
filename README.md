@@ -1,15 +1,19 @@
-# simple-webapp-1
-Basic flask application. Run and deploy to AWS
+# status: IN PROGRESS
+# simple-webapp-2
+This app is more complicated, based on the Flask tutorials. There is a database, authorization and page that lists and lets you add posts. Most of the code is from the tutorial. That all doesn't matter, we are just testing our workflow:
 
-Notes:
-1. Just one application: simple hello UI
-1. App resides in web folder
-1. Install Waitress as the web server
-1. Can test from windows with waitress or flask
-1. Use pipenv to manage package dependencies and to create a requirements.txt file
-1. Can build/run/test in Docker. Run docker commands from Web folder
-1. Use lightsailctrl to push the docker image to your lightsail
-1. Test in lightsail.
+First iteration - use flask tutorial code
+1. Delete all the pipenv files as we are starting over. pipenv will create a new environment when we use it.
+1. With pipenv install Flask and the other suggested packages. Install waitress. Now we have new pipenv files.
+1. Test locally. This works.
+1. Create a new Requirements.txt from pipenv - we need this for docker.
+1. Deploy to docker. Works.
+1. Deploy to AWS works.
+
+Next iteration - same as above but add
+1. Style css static file and bootstrap js/css - Works
+1. Need to add my own pages next
+
 
 
 # interfiction-start
