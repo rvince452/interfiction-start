@@ -1,3 +1,4 @@
+# statue: COMPLETED SUCCESS - simple app runs locally, in docker and in lightsail
 # simple-webapp-1
 Basic flask application. Run and deploy to AWS
 
