@@ -1,0 +1,57 @@
+{% extends "worldapp/layout.html" %}
+{% block title %}
+Game
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid p-2 bg-primary text-white text-center">
+    <h3>Games In Progress {{ game_id }} </h3>
+    <form action = "/playgame/" method="put">
+        {% csrf_token %}
+        <input type="submit" name="continue_game" value="Continue">
+        <input type="hidden" id="selected_world_id" name="selected_world_id_get"  value="{{ game_id }}" />
+    </form> 
+    <span>
+        lkjkj dkjkd kldjlkj ldj fkd jkjfk j kjf kdjlk dlkjlaj kjdljalejjiowjk dljf kjkek jkjfkdk
+        dkjdlj kej 
+
+        dkjldjd
+
+        dkljdjdljd
+        dljdljd
+    </span>
+    
+
+</div>
+
+
+<div id="tree"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dynatree@1.2.7/dist/jquery.dynatree.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dynatree@1.2.7/dist/skin/ui.dynatree.min.css">
+
+<script>
+    $(document).ready(function(){
+      var treeObj = $('#tree').dynatree({
+        children: [
+          { title: "Node 1", key: "1", isFolder: true, children: [
+            { title: "Node 1.1", key: "2" },
+            { title: "Node 1.2", key: "3" }
+          ]},
+          { title: "Node 2", key: "4", isFolder: true }
+        ],
+        onSelect: function(flag, node) {
+          console.log('Selected node ID:', node.data.key);
+  
+          // Add a child node to the selected node
+          var newNode = { title: 'New Child Node', key: node.data.key + '_child' };
+          node.addChild(newNode);
+        }
+      });
+  
+      var rootNode = treeObj.dynatree('getRoot');
+    });
+  </script>
+
+{% endblock %}

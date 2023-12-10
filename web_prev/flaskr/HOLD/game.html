@@ -1,0 +1,67 @@
+{% extends "worldapp/layout.html" %}
+{% block title %}
+Game
+{% endblock %}
+{% block content %}
+<div class="container-fluid p-2 bg-primary text-white text-center">
+    <h3>Games In Progress</h3>
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>World ID</th>
+            <th>World Name</th>
+        </thead>
+        <tbody>
+            {% for game in data %}
+                {% if game.iid == 1 %} 
+                <tr class="table-active" game_id="{{ game.iid }}">
+                {% else %}
+                <tr game_id="{{ game.iid }}">
+                {% endif %}
+                    <td>{{ game.iid }}</td>
+                    <td>{{ game.iid_world }}</td>
+                    <td>Not yet Available</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div id = "id_selected_div" class="container-fluid p-2 bg-primary text-white text-center">
+<h3>Selected Game</h3>
+<label id = "id_selected_text"></label>
+<form action = "/playgame/" method="get">
+{% csrf_token %}
+<input type="submit" name="continue_game" value="Continue Game">
+<input type="hidden" id="selected_game_id_get" name="selected_game_id_get"  value="" />
+</form>
+
+<form action = "/game/" method="delete">
+    {% csrf_token %}
+    <input type="submit" name="delete_game" value="Delete Game">
+    <input type="hidden" id="selected_game_id_delete" name="selected_game_id_delete"  value="" />
+</form>
+    
+
+
+</div> 
+
+<script>
+    $(document).ready(function() {
+      $('tr').click(function() {  // select all <tr> elements and bind a click event
+        $(this).addClass('table-active').siblings().removeClass('table-active');  // add "selected" class to the clicked row and remove from other rows
+        id = $(this).get(0).attributes['game_id']
+        console.log(id.value)
+        $("#selected_game_id_get").val(id.value)
+        $("#selected_game_id_delete").val(id.value)
+        console.log($("#selected_game_id_get").get(0).attributes['name'])
+        console.log($("#selected_game_id_get").get(0).attributes['value'])
+        $("#id_selected_text").text(id.value)
+        $("#id_selected_div").show()
+
+      });
+      $("#id_selected_div").hide();
+    });
+</script>  
+
+
+{% endblock %}

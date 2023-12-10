@@ -1,0 +1,35 @@
+{% extends 'base_test.html' %}
+
+
+{% block title %} Worlds {% endblock %}  
+  
+{% block content %}
+<div id="table-pane">
+  <table id="mytable" class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Description</th>
+        <th>Number of Lines</th>
+        <th>Number of Errors</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for world in worlds %}      
+      <tr class="table table-danger">
+        <td>{{world.id}}</td>
+        <td class="name">{{world.name}}</td>
+        <td>{{world.tags}}</td>
+        <td class="description">{{world.description}}</td>
+        <td>{{world.numlines}}</td>
+        <td>{{world.numerrors}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock %}
+ 

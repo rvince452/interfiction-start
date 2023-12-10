@@ -1,39 +1,288 @@
-To install Waitress
-pip install waitress
+======== Version 2
 
-To run on Windows:
-    From WEB folder:
-        flask --app app run
-        flask --app app run --host=0.0.0.0
-        flask --app app run --debug --host=0.0.0.0
+From web folder:
+docker build --tag web-flask-2 .
 
-To run on Waitress:
-waitress-serve --host 127.0.0.1 --port 5000 app:app
-waitress-serve --host 0.0.0.0 --port 5000 app:app
+From api folder:
+docker build --tag web-fastapi-2 .
 
-To test:
-http://127.0.0.1:5000/
+From parent folder:
+docker-compose build 
+docker-compose up --build
 
-Prepare for Docket
-Update requirements.txt
-pipenv requirements > requirements.txt
+To test docker locally.
+WEB: 
+DO NOT USE http://0.0.0:5000 - it does not work
+INSTEAD USE:
+http://localhost:5000
+To test it can talk to API:
+http://localhost:5000/world/
 
----Docker 
-docker build -t flask1 .
+API:
+http://localhost:8000
+http://localhost:8000/items 
 
-docker run -p 5000:5000 flask1
+Note docker is working differently than in local windows as we have to use the localhost rather than the address
 
--get docker image
-docker images
--push to aws
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label webf1 --image 4298f231e492
--deploy in aws by selecting the image and expose the correct port (5000)
--test in aws
+Also, EVEN though we can test the API directly. The Web container cannot
+call it the same way. Instead, it is called with the docker container name and port.
+ENV API_URL="http://api:8000"
+
+Deploy and run on aws
+----------------------
+docker images 
+--label web-fastapi-2 --image d5e823e38f32
+--label web-flask-2   --image 3cda691cb6af
+
+Set the path to lightsailctrl
+------------------------------
+set PATH=C:\RA2\DEV\lightsailctl;%PATH%
+
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image d5e823e38f32
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image 3cda691cb6af
+
+output:
+Image "20bc3ceba687" registered.
+Refer to this image as ":rva-lightsail-container-service.python-fastapi2.4" in deployments.
+
+Login to Amazon aws lightsail (764648435481)
+--------------------------------------------
+1) The two new images will be under images
+2) Modify deployment:
+  Container 1
+    name - api-fastapi-2
+    image - choose the web-fastapi
+    ports: 8000
+  Container 2
+    name - web-flask-2
+    image - choose
+    ports: 5000
+    Environmental variables:
+      API_URL http://rva-lightsail-container-service.service.local:8000
+
+  3) Set public endpoint as web-flask-2
+  4) Update the deployment
+
+  To test the website:
+  https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+
+  To test that it can talk to the api:
+  https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/world
+
+
+
+========== From Version 1.0
+docker build --tag python-fastapi2 .
+
+docker build --tag python-django .
+
+docker run --publish 8000:8000 python-fastapi2
+
+docker run --publish 80:80 python-django
+
+---to launch world
+C:\MYDEV\MYDEV_GITHUB\world2>uvicorn world.api.main:app --reload
+http://127.0.0.1:8000/docs#/
+
+http://127.0.0.1:8000/api/v1/entities/
+
+--to launch django
+
+python -m uvicorn web_project.asgi:application
+
+
+
+size is 192 MB, simple was 170.
+docker images 
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label python-fastapi2 --image 32f999a03d65
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-1 --image 34d39e93be33
+
+output:
+Image "20bc3ceba687" registered.
+Refer to this image as ":rva-lightsail-container-service.python-fastapi2.4" in deployments.
+
+764648435481
+
+docker-compose.yml
+
+version: "3"
+services:
+  web:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+
+docker-compose build 
+docker-compose up --build
+
+To run API:
+http://127.0.0.1:8000/docs#/
+
+To run World:
+http://127.0.0.1:80/world/
+
+
+rva-lightsail-container-service
 https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/docs
+
+contain names:
+   api
+   web
+
+   Private domain: rva-lightsail-container-service.service.local
+   [3/Jul/2023:22:28:44] Invalid HTTP_HOST header: '172.26.45.28'. You may need to add '172.26.45.28' to ALLOWED_HOSTS.
+https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com
+
+   http://rva-lightsail-container-service.service.local:8000
+
+   Reason given for failure:
+
+    Origin checking failed - https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com does not match any trusted origins.
+    
+    CSRF verification failed. Request aborted.
+Help
+
+Reason given for failure:
+
+    Origin checking failed - https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com does not match any trusted origins.
+    
+
+In general, this can occur when there is a genuine Cross Site Request Forgery, or when Django’s CSRF mechanism has not been used correctly. For POST forms, you need to ensure:
+
+    Your browser is accepting cookies.
+    The view function passes a request to the template’s render method.
+    In the template, there is a {% csrf_token %} template tag inside each POST form that targets an internal URL.
+    If you are not using CsrfViewMiddleware, then you must use csrf_protect on any views that use the csrf_token template tag, as well as those that accept the POST data.
+    The form has a valid CSRF token. After logging in in another browser tab or hitting the back button after a login, you may need to reload the page with the form, because the token is rotated after a login.
+
+You’re seeing the help section of this page because you have DEBUG = True in your Django settings file. Change that to False, and only the initial error message will be displayed.
+
+You can customize this page using the CSRF_FAILURE_VIEW setting.
+
+CSRF_TRUSTED_ORIGINS = ['https://'+ os.environ['WEBSITE_HOSTNAME']] 
+CSRF_TRUSTED_ORIGINS
+
+CORS_ALLOWED_ORIGINS
+
+CORS_ORIGIN_WHITELIST
+
+WORLD_REST_API_BASE - used by web to call rest api
+  http://127.0.0.1:8000 - me 
+  http://api:8000 - docker
+  http://rva-lightsail-container-service.service.local:8000 -aws 
+
+WORLD_WEB_URL - used by web to know who is the host. And by rest api to know caller
+ 127.0.0.1:80
+ http://web:80 - docker  
+ http://127.0.0.1:80/world/ - docker 
+ http://rva-lightsail-container-service.service.local:80
+ rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com
+ 
+ ','172.26.45.28'
+
+# DJANGO host
+world_web_url = os.environ['WORLD_WEB_URL']
+world_web_url = '127.0.0.1'
+print('ALLOWED_HOSTS is', world_web_url)
+ALLOWED_HOSTS = [world_web_url]
+
+rest_api_base = os.environ['WORLD_REST_API_BASE']  #location of rest api
+ENV WORLD_REST_API_BASE="http://api:8000"
+ENV WORLD_WEB_URL="127.0.0.1"
+
+# WEB API 
+ # CORS  
+world_web_url = os.environ['WORLD_WEB_URL']
+origins = [
+    world_web_url
+]
+
+#-------------------------------------------------------------------------------
+# Special setup for web host (DJANGO)
+
+# CORS_ALLOWED_ORIGINS - give the name of the django host, else we fail when we try to
+#						import CDN scripts. So, CORS_ALLOWED_ORIGINS is similar to
+#						the rest api: ALLOW_ORIGINS 
+Local: http://127.0.0.1:80
+Docker: http://web:80
+Lightsail: https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com
+
+CSRF_TRUSTED_ORIGINS = ['https://front.bluemix.net']
+
+#WORLD_REST_API_BASE environment variable to hold the URL of the REST API
+Local:  	http://127.0.0.1:8000
+Docker: 	http://api:8000 
+Lightsail:	http://rva-lightsail-container-service.service.local:8000
+
+DJANGO_ALLOWED_HOSTS - environmental variable to hold the name of the host ALLOWED_HOSTS
+don't set in local, it will default to [] --> ['.localhost', '127.0.0.1', '[::1]'].
+Lightsail: rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com  or 127.0.0.1
+
+TO RUN:
+SET CORS_ALLOWED_ORIGINS=http://127.0.0.1:80
+SET WORLD_REST_API_BASE=http://127.0.0.1:8000
+SET DJANGO_ALLOWED_HOSTS=
+uvicorn mysite.asgi:application --port 80
+
+TESTING:
+http://127.0.0.1/worldapp
+http://127.0.0.1/worldapp/worlds
+http://127.0.0.1/worldapp/worlds/2
+http://127.0.0.1/admin/
+http://127.0.0.1/worldapp/test
+
+#------------------------------------------------------------------------
+# Special setup for rest api (web)
+#   app.add_midleware(origins) must be set so rest api allows calls from web (django)
+ALLOW_ORIGINS = 'url1','url2','url3' (e.g. http://localhost:5000,http://127.0.0.1:5000
+Local: http://127.0.0.1:80
+Docker: http://web:80
+Lightsail: https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com
+
+TO RUN:
+SET ALLOW_ORIGINS=http://127.0.0.1:80
+uvicorn world.api.main:app --port 8000
+
+# TESTING 
+http://127.0.0.1:8000/docs#/
+http://127.0.0.1:8000/api/v1/entities/
+#--------------------------------------------------------------------------
+
+## Locally and Docker
+http://127.0.0.1:8000/docs#/
+http://127.0.0.1:8000/api/v1/entities/
 
 
 
+//IGNORE FOR NOW 
+
+# Environmental variables to use
+WORLD_WEB_URL 
+Local: 127.0.0.1:80
+Docker:ENV WORLD_WEB_URL="127.0.0.1"
+Lightsail: rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com
+
+# Setting up the host (Django)
+
+## ALLOWED_HOSTS - what is the host that is allowed to run the app.
+In django settings.py:
+ALLOWED_HOSTS = [world_web_url]
 
 
+ https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com does not match any trusted origins.
 
+DJANGO_ALLOWED_HOSTS = 172.26.3.191,rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com
 
+CORS_ALLOWED_ORIGINS 	
+
+['http://127.0.0.1:8000']
