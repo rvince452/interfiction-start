@@ -10,6 +10,9 @@ From parent folder:
 docker-compose build 
 docker-compose up --build
 
+OR 
+RUN BUILD_RUN_DOCKER.BAT 
+
 To test docker locally.
 WEB: 
 DO NOT USE http://0.0.0:5000 - it does not work
@@ -38,8 +41,8 @@ Set the path to lightsailctrl
 ------------------------------
 set PATH=C:\RA2\DEV\lightsailctl;%PATH%
 
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image d5e823e38f32
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image 3cda691cb6af
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image 074b88c1f9d0
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image b457ee86c4a9
 
 output:
 Image "20bc3ceba687" registered.
@@ -69,7 +72,8 @@ Login to Amazon aws lightsail (764648435481)
   To test that it can talk to the api:
   https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/world
 
-
+amzuser1
+caneKandy4
 
 ========== From Version 1.0
 docker build --tag python-fastapi2 .

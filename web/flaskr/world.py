@@ -9,16 +9,20 @@ from werkzeug.exceptions import abort
 
 from .auth import login_required
 from .db import get_db
+from .api import get_api_data
 
 bp = Blueprint("world", __name__, url_prefix="/world")
 
 
-@bp.route("/")
+@bp.route("/", methods=("GET", "POST"))
 def index():
-    """Show all the posts, most recent first."""
+    if request.method == "POST":
+        name = request.form["name"]      
+
     data = [{"id":"1", "name":"tara", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}, 
             {"id":"2", "name":"bd", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}, 
             {"id":"3","name":"dinah", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}]
+    data = get_api_data("/world")
     return render_template("world/index.html", worlds=data)
 
 

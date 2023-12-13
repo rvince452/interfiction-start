@@ -25,6 +25,19 @@ To test:
 http://127.0.0.1:5000
 http://127.0.0.1:5000/world
 
+To run pytest:
+SET API_URL=http://127.0.0.1:8000
+WEB
+   Flaskr
+   Tests
+ From WEB folder:
+ python -m pytest 
+
+ Coverage report:
+ coverage run -m pytest 
+ coverage report 
+
+
 TODO - UI requirements
 Header menu
 OK-horizontal
@@ -33,10 +46,12 @@ OK-login and logout
 -game -->play
 world
     table
-        alternating colors
-        selectable
+        OK alternating colors - zebra stripes are okay
+        OK selectable
         forms shown on select 
             create form 
+            upload
+            download 
 Games
     table
         status + Play button
@@ -88,11 +103,12 @@ To test:
 http://127.0.0.1:5000/
 
 To run pytest:
+SET API_URL=http://127.0.0.1:8000
 WEB
    Flaskr
    Tests
  From WEB folder:
- pythong -m pytest 
+ python -m pytest 
 
 Prepare for Docket
 Update requirements.txt
