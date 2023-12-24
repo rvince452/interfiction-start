@@ -41,8 +41,8 @@ Set the path to lightsailctrl
 ------------------------------
 set PATH=C:\RA2\DEV\lightsailctl;%PATH%
 
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image 074b88c1f9d0
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image b457ee86c4a9
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image be71c5b98bd2
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image 5b35ea70d761
 
 output:
 Image "20bc3ceba687" registered.
