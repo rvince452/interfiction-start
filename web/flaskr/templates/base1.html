@@ -1,17 +1,13 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>{% block title %}{% endblock %} - Flaskr</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <!-- Add Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-
-  </head>
-  <body>
-  <div class="container-fluid">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Link to Bootstrap CSS file (add your Bootstrap version) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
@@ -44,18 +40,19 @@
       </ul>
     </div>
   </nav>
-  <section class="content col-12">
-    <header>
-      {% block header %}{% endblock %}
-    </header>
-    {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
+
+<div class="container-fluid">
+    <!-- Content within this container will span the entire horizontal space -->
     {% block content %}{% endblock %}
+</div>
 
-  </section>
-  </div>
-  {% block scripts %}
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  {% endblock %}
+<!-- Link to Bootstrap JS and Popper.js (add your Bootstrap version) -->
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

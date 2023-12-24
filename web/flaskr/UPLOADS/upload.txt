@@ -1,0 +1,13 @@
+world descript1
+world descript 2
+LOCATION town
+world text 3
+LOCATION house
+	house text
+world text 4
+LOCATION park
+	park text
+	ITEM gun
+	gun text
+	more park text
+final text for world

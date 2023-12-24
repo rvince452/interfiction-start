@@ -39,6 +39,7 @@ WEB
 
 
 TODO - UI requirements
+how to get page to take full scale 
 Header menu
 OK-horizontal
 OK-login and logout

@@ -1,10 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 
 {% block header %}
   <h1>{% block title %}Worlds{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
+{% if g.user %}
+<div class="col-12">
+  <form id="new" method="post" >
+    <h3>Create World</h3>
+    {% for message in data.newForm.name.errors %}
+    {{ message }}
+    {% endfor %}        
+    {{ data.newForm.csrf_token }}
+      {{ data.newForm.name.label }} {{ data.newForm.name(size=20) }}
+      {{ data.newForm.description.label }} {{ data.newForm.description(size=200) }}
+      {{ data.newForm.submit(class="btn btn-primary") }}
+  </form>
+</div>
+{% endif %}
 <div id="table-pane">
   <table id="mytable" class="table table-striped table-hover">
     <thead>
@@ -15,10 +29,11 @@
         <th>Description</th>
         <th>Number of Lines</th>
         <th>Number of Errors</th>
+        <th>User</th>
       </tr>
     </thead>
     <tbody>
-      {% for world in worlds %}      
+      {% for world in data.worlds %}      
       <tr data-id="{{world.id}}">
         <td>{{world.id}}</td>
         <td class="name">{{world.name}}</td>
@@ -26,61 +41,89 @@
         <td class="description">{{world.description}}</td>
         <td>{{world.numlines}}</td>
         <td>{{world.numerrors}}</td>
+        <td>USER(TODO)</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
-<div class="container">
+<!-- Editable controls below -->
+{% if g.user %}
+<div class="container col-12">
+  {% for message in data.editForm.name.errors %}
+  {{ message }}
+  {% endfor %}    
+  {% for message in data.editForm.description.errors %}
+  {{ message }}
+  {% endfor %}    
+  {% for message in data.newForm.name.errors %}
+  {{ message }}
+  {% endfor %}    
+  {% for message in data.newForm.description.errors %}
+  {{ message }}
+  {% endfor %}  
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      <ul>
+          {% for category,message in messages %}
+              <li class="{{category}}">{{ message }}</li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+{% endwith %}
+
+    
   <div class="row">
-    <div id="panel1-selected-id" class="col-sm">
-      One of three columns
-    </div>
-    <div id="panel2-selected-id" class="col-sm">
-      One of three columns
-    </div>
-    <div id="panel3-selected-id" class="col-sm">
-      One of three columns
-    </div>
-    <div id="panel4-selected-id" class="col-sm">
-      One of three columns
-    </div>
-  </div>
-  
-  <div class="row">
+
     <div class="col-sm">
+      <h3>Edit World</h3>
+      <form id="update" method="post" >
+        {{ data.editForm.csrf_token }}
+        {{ data.editForm.id.label }} {{ data.editForm.id(size=20) }}
+        {{ data.editForm.name.label }} {{ data.editForm.name(size=20) }}
+          {{ data.editForm.description.label }} {{ data.editForm.description(size=200) }}          
+          {{ data.editForm.submit(class="btn btn-primary") }}       
+      </form>
+    </div>
+    
+    <div class="col-sm">
+      <form id="action" method="post">
+        <h3>Delete World</h3>
+        <div class="form-group">
+          {{ data.actionForm.csrf_token }}
+          {{ data.actionForm.id.label }} {{ data.actionForm.id(size=20) }}
+          {{ data.actionForm.action.label }} {{ data.actionForm.action }}
+          {{ data.actionForm.submit(class="btn btn-primary") }}       
+          </div>
+      </form>
+    </div>
+
+    <div class="col-sm">
+      <h3>Upload Story</h3>      
+        <form method="post" enctype="multipart/form-data">
+          {{ data.uploadForm.id.label }} {{ data.uploadForm.id(size=20) }}
+          {{ data.uploadForm.hidden_tag() }}
+          {{ data.uploadForm.file.label }}
+          {{ data.uploadForm.file }}
+          {{ data.uploadForm.submit(class="btn btn-primary") }}       
+    </form>    
+
+    <div class="col-sm">
+      <h3>Download Story</h3>
       <form method="post">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" class="form-control" name="name" id="name">
-        </div>
-        <div class="form-group">
-          <label for="description">Description:</label>
-          <input type="text" class="form-control" id="description">
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
-    </div>
-    
-    <div class="col-sm">
-      <form>
-        <div class="form-group">
-          <label for="file">Upload File:</label>
-          <input type="file" class="form-control-file" id="file">
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
-      </form>
-    </div>
-    
-    <div class="col-sm">
-      <form>
-        <button type="submit" class="btn btn-primary">Download File</button>
-      </form>
+        {{ data.downloadForm.id.label }} {{ data.downloadForm.id(size=20) }}
+        {{ data.downloadForm.hidden_tag() }}
+        {{ data.downloadForm.submit(class="btn btn-primary") }}
+    </form>
     </div>
   </div>
 </div>
+
 </div>
+{% endif %}
+
 
 {% endblock %}
 
@@ -100,10 +143,11 @@
     $('#mytable tbody tr').on('click', function() {
       var id = $(this).data('id');
       console.log("Row clicked with ID: " + id);
-      $('#panel1-selected-id').text(id);
-      $('#panel2-selected-id').text(id);
-      $('#panel3-selected-id').text(id);
-      $('#panel4-selected-id').text(id);
+      $('#selectedWorldIdEdit').val(id);
+      $('#selectedWorldIdAction').val(id);
+      $('#selectedWorldIdDownload').val(id);
+      $('#selectedWorldIdUpload').val(id);
+      
     });    
   });
 </script>
