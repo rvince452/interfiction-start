@@ -1,0 +1,138 @@
+----------simple-webapp-2 ------------------------
+We are following tutorial found here: https://github.com/pallets/flask/tree/2.3.3/examples/tutorial
+
+Clean pipenv and then pipenv install -r requirements to get the new stuff 
+To run on Windows:
+    From WEB folder:
+        flask --app flaskr init-db
+        flask --app flaskr run --debug
+
+Flask debugger 
+SET API_URL=http://127.0.0.1:8000
+flask --app flaskr run --debug
+
+I tried to use Uvicorn and asgiref but it don't work. So for now I will use waitress 
+To run on Waitress:
+*waitress-serve --call flaskr:create_app 
+waitress-serve --host 127.0.0.1 --call flaskr:create_app
+waitress-serve --host 0.0.0.0 --call flaskr:create_app 
+*waitress-serve --host 0.0.0.0 --port 5000 --call flaskr:create_app
+BUT FIRST SET THIS:
+SET API_URL=http://127.0.0.1:8000
+waitress-serve --host 0.0.0.0 --port 5000 --call flaskr:create_app
+
+To test:
+http://127.0.0.1:5000
+http://127.0.0.1:5000/world
+
+To run pytest:
+SET API_URL=http://127.0.0.1:8000
+WEB
+   Flaskr
+   Tests
+ From WEB folder:
+ python -m pytest 
+
+ Coverage report:
+ coverage run -m pytest 
+ coverage report 
+
+
+TODO - UI requirements
+how to get page to take full scale 
+Header menu
+OK-horizontal
+OK-login and logout
+-world --play
+-game -->play
+world
+    table
+        OK alternating colors - zebra stripes are okay
+        OK selectable
+        forms shown on select 
+            create form 
+            upload
+            download 
+Games
+    table
+        status + Play button
+Play 
+
+
+user=user2
+pw=Apple23
+
+To run unit tests 
+pipenv install '.[test]'
+
+Prepare for Docket
+Update requirements.txt
+pipenv requirements > requirements.txt
+
+---Docker (run from web folder)
+docker build -t flask2 .
+
+docker run -p 5000:5000 flask2
+
+-get docker image
+docker images
+-push to aws
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label webf2 --image c9e7a5627ed1
+-deploy in aws by selecting the image and expose the correct port (5000)
+-test in aws
+https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+
+
+
+
+
+-----------simple-webapp-1 ---------------------
+To install Waitress
+pip install waitress
+
+To run on Windows:
+    From WEB folder:
+        flask --app app run
+        flask --app app run --host=0.0.0.0
+        flask --app app run --debug --host=0.0.0.0
+
+To run on Waitress:
+waitress-serve --host 127.0.0.1 --port 5000 app:app
+waitress-serve --host 0.0.0.0 --port 5000 app:app
+
+To test:
+http://127.0.0.1:5000/
+
+To run pytest:
+SET API_URL=http://127.0.0.1:8000
+WEB
+   Flaskr
+   Tests
+ From WEB folder:
+ python -m pytest 
+
+Prepare for Docket
+Update requirements.txt
+pipenv requirements > requirements.txt
+
+---Docker 
+docker build -t flask1 .
+
+docker run -p 5000:5000 flask1
+
+-get docker image
+docker images
+-push to aws
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label webf2 --image c9e7a5627ed1
+-deploy in aws by selecting the image and expose the correct port (5000)
+-test in aws
+https://rva-lightsail-container-service.m7qlb0gjoi5hg.us-east-2.cs.amazonlightsail.com/
+
+
+https://aws.amazon.com/blogs/developer/using-amazon-sqs-with-spring-boot-and-spring-jms/
+
+
+
+
+
+
