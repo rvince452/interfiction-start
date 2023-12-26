@@ -1,3 +1,31 @@
+-----simple-webapp-3
+
+entities
+World(BaseModel):
+    worldId: int 
+    worldName: str
+    owner: str
+    description: str 
+
+WorldProperties(BaseModel):
+    numLines: int 
+    numErrors: int 
+
+WorldTag(BaseModel):
+    tagId: int 
+    tagName: str 
+Game(BaseModel):
+    gameId: int 
+    worldId: int 
+    player: str 
+
+GameStatus(BaseModel):
+    id: int 
+    gameId: int
+    worldId: int 
+    
+
+
 ----------simple-webapp-2 ------------------------
 We are following tutorial found here: https://github.com/pallets/flask/tree/2.3.3/examples/tutorial
 
