@@ -22,10 +22,8 @@ Bare implementation, servers some static JSON to worlds
 
 # Goals for iteration 3
 1. Enable real world create, edit and delete functionality.
-1. Enable ability to Play a World (create a new game, add it to game list and navigate to play screen). But always creat a new play game.
-1. Games list should pull from database.
-1. Add base entities/methods to API to support the above
-
+1. When a user registers, add the user to the api.
+1. In api, check user has permission or error.
 
 # interfiction-start
 This is the start of my ***Interfiction*** project. The general purpose is to implement an interactive fiction website.
