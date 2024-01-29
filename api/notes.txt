@@ -1,0 +1,11 @@
+Issue - User and World have a relationshipt through user id. But if I create a world with 
+a user id that doesn't exist, there is  no error. When I look at that World, the user id is filled
+but the User object is not. After I enter the user then the relationships work.
+
+User access design.
+    World has a userId which is the 'author'
+    Game has a userId which is the 'player'
+    But each REST call, should have an associated userId of the person making the call.
+        We put that in the header under user_token
+        For now, it is straight text and the user = user_token
+        

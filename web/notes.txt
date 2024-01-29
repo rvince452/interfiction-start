@@ -1,5 +1,17 @@
 -----simple-webapp-3
 
+SelectWorld(BaseModel):
+    worldId: int 
+EditWorld(SelectWorld):
+    worldName: str 
+    description: str 
+CreateWorld(BaseModel):
+    worldName: str 
+    description: str 
+
+CreateGame(BaseModel):
+    worldId: int 
+
 entities
 World(BaseModel):
     worldId: int 
@@ -32,7 +44,9 @@ We are following tutorial found here: https://github.com/pallets/flask/tree/2.3.
 Clean pipenv and then pipenv install -r requirements to get the new stuff 
 To run on Windows:
     From WEB folder:
+    SET API_URL=http://127.0.0.1:8000
         flask --app flaskr init-db
+        SET API_URL=http://127.0.0.1:8000
         flask --app flaskr run --debug
 
 Flask debugger 

@@ -15,10 +15,19 @@ bp = Blueprint("play", __name__, url_prefix="/play")
 
 @bp.route("/")
 def index():
-    """Show all the posts, most recent first."""
-    data = [{"id":"1", "name":"tara", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}, 
-            {"id":"2", "name":"bd", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}, 
-            {"id":"3","name":"dinah", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}]
-    return render_template("play/index.html", worlds=data)
+    name = "Space Station Sally"
+    location = "Loading Bay"
+    choices = [("Continue","Continue"),("Skip","Skip")]
+    oitems = [("Wrench","Hammer"),("Pistol","Raygun")]
+    text = """
+    Hello, and welcome to Space Station Sally! You are Sally, a space station
+        mechanic. You have been called to the loading bay to fix a broken
+        hyperdrive. You have a wrench and a pistol in your inventory. What do
+        you do?
+
+    """
+    status = {"name":name, "location":location, "choices":choices, "oitems":oitems
+              ,"text":text}
+    return render_template("play/index.html", data=status)
 
 
