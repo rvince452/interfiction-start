@@ -10,6 +10,8 @@ from flask import session
 from flask import url_for
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
+from .schemas import UserCreate
+from .api import post_api_data
 
 from .db import get_db
 
@@ -53,6 +55,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form["email"]
         db = get_db()
         error = None
 
@@ -60,18 +63,22 @@ def register():
             error = "Username is required."
         elif not password:
             error = "Password is required."
+        elif not email:
+            error = "Email is required."
 
         if error is None:
             try:
+                ec = UserCreate(email=email, userId=username)
+                post_api_data("/user", ec.dict())
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
+                    (username, email, generate_password_hash(password)),
                 )
                 db.commit()
             except db.IntegrityError:
                 # The username was already taken, which caused the
                 # commit to fail. Show a validation error.
-                error = f"User {username} is already registered."
+                error = f"User {username} or Email {email} is already registered."
             else:
                 # Success, go to the login page.
                 return redirect(url_for("auth.login"))

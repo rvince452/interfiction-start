@@ -1,20 +1,29 @@
-# status: IN PROGRESS
-# simple-webapp-2
+
+# simple-webapp-3 - iteration notes
+
+Previously, both previous branches are Flask (web) and FastAPI (api-backend). They have different requirements and are both docker projects. Following the instructions in notes.txt I can:
+1. Run them locally (they must both be running)
+1. Deploy both to docker build and run from docker
+1. Push to AWS lightsail and redeploy in AWS using the new images.
+
+So now we are just going to update each project to enhance the application.
+## Note - I have added a Web/Screenshots folder to show screenshots from the iteration.
 This app is more complicated, based on the Flask tutorials. There is a database, authorization and page that lists and lets you add posts. Most of the code is from the tutorial. That all doesn't matter, we are just testing our workflow:
 
-First iteration - use flask tutorial code
-1. Delete all the pipenv files as we are starting over. pipenv will create a new environment when we use it.
-1. With pipenv install Flask and the other suggested packages. Install waitress. Now we have new pipenv files.
-1. Test locally. This works.
-1. Create a new Requirements.txt from pipenv - we need this for docker.
-1. Deploy to docker. Works.
-1. Deploy to AWS works.
+What worked in previous iteration:
+### Web
+1. Base web with nav menu and user login/logout/register (from Flask tutorial)
+1. Worlds list with actions on selected world. Hide edit actions unless user is logged in.
+2. Games list with resume/delete action. Hide edit actions unless user is logged in.
+3. Bare play menu
 
-Next iteration - same as above but add
-1. Style css static file and bootstrap js/css - Works
-1. Need to add my own pages next
+### Api
+Bare implementation, servers some static JSON to worlds
 
-
+# Goals for iteration 3
+1. Enable real world create, edit and delete functionality.
+1. When a user registers, add the user to the api.
+1. In api, check user has permission or error.
 
 # interfiction-start
 This is the start of my ***Interfiction*** project. The general purpose is to implement an interactive fiction website.

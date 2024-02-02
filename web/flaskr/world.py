@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint
+from flask import Blueprint, session
 from flask import flash
 from flask import g
 from flask import redirect
@@ -10,11 +10,12 @@ from werkzeug.exceptions import abort
 
 from .auth import login_required
 from .db import get_db
-from .api import get_api_data
+from .api import get_api_data, post_api_data, put_api_data, delete_api_data, get_current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 from wtforms import TextAreaField, RadioField, SubmitField, FileField
+from .schemas import WorldCreate, WorldEdit, WorldDelete
 
 class ExistingIdWorldForm(FlaskForm):
     id = StringField('id', render_kw={'readonly': True}, validators=[DataRequired()])
@@ -48,6 +49,7 @@ bp = Blueprint("world", __name__, url_prefix="/world")
 
 @bp.route("/", methods=("GET", "POST"))
 def index():
+    userId = get_current_user()
     actionForm = ActionWorldForm()
     actionForm.id.id = "selectedWorldIdAction"
     editForm = EditWorldForm()
@@ -71,11 +73,22 @@ def index():
         elif submitType == 'Create':
             if not newForm.validate():
                 flash("All fields are required.")
-            pass
+            else:
+                wc = WorldCreate(worldName=newForm.name.data, description=newForm.description.data, userId=userId)
+                post_api_data("/world", wc.dict())
         elif submitType == 'Edit':
-            pass
+            if not editForm.validate():
+                flash("All fields are required.")
+            else:
+                wc = WorldEdit(description=editForm.description.data, userId=userId, worldId=editForm.id.data, worldName=editForm.name.data)
+                put_api_data("/world", wc.dict())
         elif submitType == 'Process':
-            flash("No file selected.", "error")
+            if not actionForm.validate():
+                flash("All fields are required.")
+            elif actionForm.action.data == 'delete':
+                wc = WorldDelete(worldId=actionForm.id.data, userId=userId)
+                delete_api_data("/world", wc.dict())
+
             
 
     worlds = [{"id":"1", "name":"tara", "description":"a description","tags":"tag1,tag2", "numlines":4, "numerrors":0}, 

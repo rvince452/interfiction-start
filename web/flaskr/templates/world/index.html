@@ -34,14 +34,14 @@
     </thead>
     <tbody>
       {% for world in data.worlds %}      
-      <tr data-id="{{world.id}}">
-        <td>{{world.id}}</td>
-        <td class="name">{{world.name}}</td>
+      <tr data-id="{{world.worldId}}">
+        <td>{{world.worldId}}</td>
+        <td class="name">{{world.worldName}}</td>
         <td>{{world.tags}}</td>
         <td class="description">{{world.description}}</td>
         <td>{{world.numlines}}</td>
         <td>{{world.numerrors}}</td>
-        <td>USER(TODO)</td>
+        <td>{{world.userId}}</td>
       </tr>
       {% endfor %}
     </tbody>

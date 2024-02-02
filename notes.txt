@@ -1,17 +1,17 @@
-======== Version 2
+======== Version 2 -> 3
 
 From web folder:
-docker build --tag web-flask-2 .
+docker build --tag web-flask-3 .
 
 From api folder:
-docker build --tag web-fastapi-2 .
+docker build --tag web-fastapi-3 .
 
 From parent folder:
 docker-compose build 
 docker-compose up --build
 
 OR 
-RUN BUILD_RUN_DOCKER.BAT 
+RUN BUILD_RUN_DOCKER.BAT from main folder 
 
 To test docker locally.
 WEB: 
@@ -41,8 +41,8 @@ Set the path to lightsailctrl
 ------------------------------
 set PATH=C:\RA2\DEV\lightsailctl;%PATH%
 
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image be71c5b98bd2
-aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image 5b35ea70d761
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-fastapi-2 --image 038197ac07b0
+aws lightsail push-container-image --service-name rva-lightsail-container-service --label web-flask-2   --image dd06a20c8c3a
 
 output:
 Image "20bc3ceba687" registered.
